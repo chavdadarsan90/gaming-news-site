@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About the Developer & Support</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #121212; color: #e0e0e0; }
+        .dev-card, .bug-card { background-color: #1e1e1e; border: 1px solid #333; border-radius: 12px; padding: 30px; }
+        .profile-img { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 4px solid #dc3545; }
+        /* Fixes the description text opacity under your name */
+        .dev-desc { color: #b3b3b3 !important; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-danger" href="{% url 'home' %}">🎮 GG_NEWS</a>
+            <a href="{% url 'home' %}" class="btn btn-outline-light btn-sm">Back to Feed</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1000px; margin-bottom: 50px;">
+        <div class="row">
+            
+            <div class="col-md-5 mb-4">
+                <div class="dev-card text-center shadow-sm">
+                    <img src="{% static 'developer.png' %}" class="profile-img mb-3" alt="Darsan Chavada">
+                    
+                    <h3 class="text-white">Darsan Chavada</h3>
+                    <p class="text-danger fw-bold">Lead Full-Stack Web Developer</p>
+                    <hr class="border-secondary">
+                    <p class="dev-desc small px-2">
+                        Designed and built this automated gaming news aggregation architecture for my Diploma Software Engineering presentation. Specialist in Python backend pipelines and responsive interfaces.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-7 mb-4">
+                <div class="bug-card shadow-sm">
+                    <h3 class="text-warning mb-2">🛡️ Bug Report & Support</h3>
+                    <p class="text-white-50 small mb-4">Found an issue or API glitch? Submit a ticket straight to the developer dashboard below.</p>
+
+                    {% if success %}
+                        <div class="alert alert-success bg-success text-white border-0">
+                            🚀 Bug report submitted successfully! The developer has been notified.
+                        </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label small text-white fw-bold">Your Name</label>
+                                <input type="text" name="name" class="form-control bg-dark text-white border-secondary" required>
+                            </div>
+                            <div class="col">
+                                <label class="form-label small text-white fw-bold">Email Address</label>
+                                <input type="email" name="email" class="form-control bg-dark text-white border-secondary" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-white fw-bold">Issue Title / Area</label>
+                            <input type="text" name="title" class="form-control bg-dark text-white border-secondary" placeholder="e.g., Search bar error, Image missing" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-white fw-bold">Detailed Description</label>
+                            <textarea name="description" class="form-control bg-dark text-white border-secondary" rows="4" placeholder="Explain what happened..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100 text-dark fw-bold">Submit Bug Report</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Gaming Lounge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #121212; color: #e0e0e0; }
+        .card { background-color: #1e1e1e; border: none; color: white; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark border-bottom border-secondary mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-danger" href="{% url 'home' %}">🎮 GG_NEWS</a>
+            <a href="{% url 'home' %}" class="btn btn-outline-light btn-sm">Back to Feed</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 800px;">
+        <div class="p-4 mb-4 bg-dark rounded border border-secondary text-center">
+            <h2 class="text-warning">Welcome, @{{ user.username }}!</h2>
+            <p class="text-muted mb-0">Joined: {{ user.date_joined|date:"F Y" }}</p>
+        </div>
+
+        <h4 class="mb-3 text-danger">⭐ Your Bookmarked Reading List ({{ saved_articles.count }})</h4>
+        
+        <div class="row">
+            {% for article in saved_articles %}
+                <div class="col-12 mb-3">
+                    <div class="card p-3 border border-secondary h-100">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1"><a href="{% url 'article_detail' article.slug %}" class="text-white text-decoration-none hover-danger">{{ article.title }}</a></h5>
+                                <small class="text-muted">Saved on your profile</small>
+                            </div>
+                            <a href="{% url 'toggle_bookmark' article.slug %}" class="btn btn-sm btn-outline-danger">Remove</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="text-center py-4">
+                    <p class="text-muted">Your lounge is empty! Go browse the home feed and hit star on interesting articles.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>
