@@ -2,26 +2,301 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Join GG_NEWS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join GG_NEWS | Level Up Your Source</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #121212; color: #e0e0e0; }
-        .card { background-color: #1e1e1e; border: none; color: white; }
-        .form-control { background-color: #2b2b2b; border: 1px solid #444; color: white; }
-        .form-control:focus { background-color: #333; color: white; border-color: #dc3545; box-shadow: none; }
+        :root {
+            --primary-red: #ff4655;
+            --accent-yellow: #ffb800;
+            --bg-dark: #0f1923;
+            --card-bg: #1a252e;
+            --text-gray: #8f9ca8;
+            --neon-blue: #00f2ff;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Rajdhani', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background Particles */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a252e 0%, #0f1923 100%);
+        }
+
+        .main-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .glass-container {
+            background: rgba(26, 37, 46, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            width: 100%;
+            max-width: 1100px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            animation: fadeInScale 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Hero Section (Left) */
+        .hero-panel {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(255, 70, 85, 0.1) 0%, rgba(15, 25, 35, 0) 100%),
+                        url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, transparent, rgba(26, 37, 46, 1));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fff, var(--primary-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* Form Section (Right) */
+        .form-panel {
+            flex: 1;
+            padding: 60px;
+            background: var(--card-bg);
+        }
+
+        .form-header {
+            margin-bottom: 40px;
+        }
+
+        .form-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-bottom: 10px;
+        }
+
+        /* Django Form Styling Override */
+        form p {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], select {
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(15, 25, 35, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px;
+            color: #fff !important;
+            transition: all 0.3s ease;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-red) !important;
+            box-shadow: 0 0 0 4px rgba(255, 70, 85, 0.15) !important;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-gray);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .helptext {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+
+        .btn-register:hover {
+            background: #ff5d6a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 70, 133, 0.3);
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-gray);
+        }
+
+        .footer-link a {
+            color: var(--accent-yellow);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
+
+        @media (max-width: 991px) {
+            .hero-panel { display: none; }
+            .glass-container { max-width: 500px; }
+        }
+
+        @media (max-width: 576px) {
+            .form-panel { padding: 40px 25px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="card p-4 shadow" style="width: 400px;">
-            <h3 class="text-center text-danger mb-4">Create Account</h3>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-danger w-100 mt-3">Sign Up</button>
-            </form>
-            <p class="mt-3 text-center small text-muted">Already have an account? <a href="{% url 'login' %}" class="text-warning text-decoration-none">Log In</a></p>
+    <div id="particles-js"></div>
+
+    <div class="main-wrapper">
+        <div class="glass-container">
+            <div class="hero-panel">
+                <div class="hero-content">
+                    <div class="logo-brand">GG_NEWS</div>
+                    <h1 class="display-5 fw-bold mb-3">UNLEASH THE<br>PRO PLAYER WITHIN.</h1>
+                    <p class="hero-tagline">Access exclusive gaming insights, early patches, and join a community of 500k+ gamers worldwide.</p>
+                    
+                    <div class="features-list mt-5">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-bolt text-danger me-3"></i>
+                            <span>Real-time eSports updates</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-trophy text-warning me-3"></i>
+                            <span>Weekly community tournaments</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shield-halved text-info me-3"></i>
+                            <span>Secure gaming profile</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-panel">
+                <div class="form-header text-center text-lg-start">
+                    <h2>INITIATE ACCOUNT</h2>
+                    <p class="text-muted">Fill in your coordinates to start the mission.</p>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="django-form-container">
+                        {{ form.as_p }}
+                    </div>
+
+                    <button type="submit" class="btn-register">
+                        START JOURNEY <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </form>
+
+                <div class="footer-link">
+                    Already a member? <a href="{% url 'login' %}">LOGIN COMMAND</a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ff4655" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.2, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ff4655", "opacity": 0.1, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } } }
+            },
+            "retina_detect": true
+        });
+
+        // Add interaction to dynamic form inputs generated by Django
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('focus', () => {
+                    if (input.parentElement) {
+                        input.parentElement.style.transition = '0.3s';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
