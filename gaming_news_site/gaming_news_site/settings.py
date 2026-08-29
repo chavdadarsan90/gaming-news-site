@@ -27,12 +27,28 @@ if DATABASE_URL:
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+    # If running on Vercel, copy the SQLite database to /tmp so it's writable
+    if 'VERCEL' in os.environ:
+        import shutil
+        src_db = BASE_DIR / 'db.sqlite3'
+        dest_db = Path('/tmp/db.sqlite3')
+        if src_db.exists() and not dest_db.exists():
+            shutil.copy2(src_db, dest_db)
+        
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': dest_db,
+            }
         }
-    }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+
 
 
 # Application definition
@@ -122,3 +138,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'home'
+
+# Use cookie-based sessions to prevent write operations on read-only serverless databases
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
