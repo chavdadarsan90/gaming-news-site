@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "gaming_news_site/gaming_news_site/wsgi.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     },
     {
@@ -20,8 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "gaming_news_site/gaming_news_site/wsgi.py"
+      "dest": "api/index.py"
     }
   ]
 }
-
