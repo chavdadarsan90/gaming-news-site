@@ -53,6 +53,10 @@ class UpcomingGame(models.Model):
     def __str__(self):
         return self.title
 
+    def get_platform_list(self):
+        return [p.strip() for p in self.platform.split(',') if p.strip()]
+
+
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)

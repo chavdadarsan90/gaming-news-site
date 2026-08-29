@@ -22,5 +22,4 @@ GG_NEWS is a dynamic, fully responsive web application built with Python and Dja
 1. Clone or download this repository.
 2. Open your terminal in the project root folder.
 3. Apply the database migrations:
-   ```bash
- python manage.py migrate
+

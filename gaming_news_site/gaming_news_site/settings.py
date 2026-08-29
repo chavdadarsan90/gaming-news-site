@@ -11,18 +11,16 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-from pathlib import Path
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-please-change-me')
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
-# Database configuration (supports Railway DATABASE_URL)
-import dj_database_url
-
+# Database configuration (supports PostgreSQL via DATABASE_URL or local SQLite)
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:
     DATABASES = {
@@ -51,8 +49,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -67,6 +65,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,17 +78,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'gaming_news_site.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation

@@ -2,61 +2,258 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ review.game_name }} - Review</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ review.game_name }} - Review | GG_NEWS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
-        body { background-color: #121212; color: #e0e0e0; }
-        .review-box { background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 20px; }
-        .score-circle { width: 80px; height: 80px; background-color: #ffc107; color: #121212; font-size: 1.8rem; font-weight: bold; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        :root {
+            --bg-dark: #0b0f19;
+            --card-bg: #151c2c;
+            --border-color: #2a364f;
+            --accent-gold: #ffc107;
+            --accent-red: #ff3b5c;
+            --accent-green: #10b981;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-banner {
+            position: relative;
+            min-height: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .hero-banner img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, var(--bg-dark) 10%, rgba(11, 15, 25, 0.6) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 2.5rem;
+            width: 100%;
+        }
+
+        .score-badge-large {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            box-shadow: 0 0 30px rgba(255, 193, 7, 0.4);
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .score-gold { background: linear-gradient(135deg, #ffc107, #ff9800); color: #000; }
+        .score-green { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+        .score-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; }
+
+        .content-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .summary-quote {
+            background: rgba(255, 193, 7, 0.05);
+            border-left: 4px solid var(--accent-gold);
+            padding: 18px 24px;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--accent-gold);
+        }
+
+        .pro-card {
+            background-color: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .con-card {
+            background-color: rgba(255, 59, 92, 0.08);
+            border: 1px solid rgba(255, 59, 92, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .pro-item, .con-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .pro-item:last-child, .con-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            color: #38bdf8;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark mb-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark sticky-top mb-4">
         <div class="container">
-            <a class="navbar-brand text-danger fw-bold" href="{% url 'review_list' %}">⬅ Back to Reviews</a>
+            <a href="{% url 'review_list' %}" class="btn btn-outline-light btn-sm px-3 rounded-pill">
+                <i class="bi bi-arrow-left me-1"></i> Back to Reviews
+            </a>
+            <a class="navbar-brand text-danger fw-bold fs-5 mb-0" href="{% url 'home' %}">
+                <i class="bi bi-controller"></i> GG_NEWS
+            </a>
         </div>
     </nav>
 
-    <div class="container" style="max-width: 800px; margin-bottom: 50px;">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="text-white mb-1">{{ review.game_name }}</h1>
-                <p class="text-muted">Reviewed on: {{ review.created_at|date:"F d, Y" }}</p>
+    <!-- Content Area -->
+    <div class="container pb-5" style="max-width: 900px;">
+
+        <!-- Hero Header -->
+        <div class="hero-banner">
+            {% if review.cover_image_url %}
+                <img src="{{ review.cover_image_url }}" alt="{{ review.game_name }} background">
+            {% endif %}
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                    <div>
+                        <h1 class="display-5 text-white fw-bold mb-2">{{ review.game_name }}</h1>
+                        <div class="text-secondary small d-flex align-items-center gap-3">
+                            <span><i class="bi bi-calendar-event me-1"></i> Reviewed {{ review.created_at|date:"F d, Y" }}</span>
+                            <span>•</span>
+                            <span><i class="bi bi-shield-check me-1 text-info"></i> Verified Editor Review</span>
+                        </div>
+                    </div>
+
+                    {% if review.rating >= 9 %}
+                        <div class="score-badge-large score-green">
+                            <span>{{ review.rating }}</span>
+                            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">OUT OF 10</span>
+                        </div>
+                    {% elif review.rating >= 7 %}
+                        <div class="score-badge-large score-gold">
+                            <span>{{ review.rating }}</span>
+                            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">OUT OF 10</span>
+                        </div>
+                    {% else %}
+                        <div class="score-badge-large score-blue">
+                            <span>{{ review.rating }}</span>
+                            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">OUT OF 10</span>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-            <div class="score-circle shadow">{{ review.rating }}</div>
         </div>
 
-        <p class="fs-5 text-warning italic mb-4">"{{ review.summary }}"</p>
-        <hr class="border-secondary">
+        <!-- Summary Quote -->
+        <div class="summary-quote mb-4">
+            <i class="bi bi-quote fs-3 me-2"></i>"{{ review.summary }}"
+        </div>
 
-        <h4 class="text-info mt-4">🕹️ Gameplay Review</h4>
-        <p style="line-height: 1.7;">{{ review.gameplay_review }}</p>
+        <!-- Gameplay Section -->
+        <div class="content-card">
+            <h3 class="h4 section-header">
+                <i class="bi bi-controller text-info fs-4"></i> Gameplay & Mechanics
+            </h3>
+            <p style="line-height: 1.8; color: #cbd5e1;">
+                {{ review.gameplay_review|linebreaks }}
+            </p>
+        </div>
 
-        <h4 class="text-info mt-4">🖥️ Graphics & Performance</h4>
-        <p style="line-height: 1.7;">{{ review.graphics_performance_review }}</p>
+        <!-- Graphics & Performance Section -->
+        <div class="content-card">
+            <h3 class="h4 section-header">
+                <i class="bi bi-display text-info fs-4"></i> Graphics & Performance
+            </h3>
+            <p style="line-height: 1.8; color: #cbd5e1;">
+                {{ review.graphics_performance_review|linebreaks }}
+            </p>
+        </div>
 
-        <div class="row mt-5">
-            <div class="col-md-6 mb-3">
-                <div class="review-box border border-success h-100">
-                    <h5 class="text-success mb-3">🟩 Pros</h5>
-                    <ul>
+        <!-- Pros & Cons Grid -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="pro-card h-100">
+                    <h4 class="h5 text-success fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-hand-thumbs-up-fill fs-5"></i> The Good (Pros)
+                    </h4>
+                    <div class="pro-list">
                         {% for pro in review.get_pros_list %}
-                            <li class="mb-2">{{ pro }}</li>
+                            <div class="pro-item">
+                                <i class="bi bi-check-circle-fill text-success fs-6 mt-1"></i>
+                                <span>{{ pro }}</span>
+                            </div>
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <div class="review-box border border-danger h-100">
-                    <h5 class="text-danger mb-3">🟥 Cons</h5>
-                    <ul>
+            <div class="col-md-6">
+                <div class="con-card h-100">
+                    <h4 class="h5 text-danger fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-hand-thumbs-down-fill fs-5"></i> The Bad (Cons)
+                    </h4>
+                    <div class="con-list">
                         {% for con in review.get_cons_list %}
-                            <li class="mb-2">{{ con }}</li>
+                            <div class="con-item">
+                                <i class="bi bi-x-circle-fill text-danger fs-6 mt-1"></i>
+                                <span>{{ con }}</span>
+                            </div>
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Final Verdict Footer -->
+        <div class="content-card text-center py-4 bg-dark bg-opacity-75">
+            <h4 class="text-white fw-bold mb-2">Final Verdict</h4>
+            <p class="text-secondary small mb-3">Overall Score assigned by GG_NEWS editorial team based on gameplay depth, presentation, and replayability.</p>
+            <div class="d-inline-block px-4 py-2 rounded-pill bg-warning bg-opacity-10 border border-warning text-warning fw-bold">
+                <i class="bi bi-star-fill me-1"></i> {{ review.rating }} / 10 Score
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

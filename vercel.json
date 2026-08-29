@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "gaming_news_site/gaming_news_site/wsgi.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "build_files.sh",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "gaming_news_site/staticfiles"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "gaming_news_site/gaming_news_site/wsgi.py"
+    }
+  ]
+}
+
